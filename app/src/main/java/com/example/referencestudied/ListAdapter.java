@@ -1,6 +1,7 @@
 package com.example.referencestudied;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,8 @@ import android.widget.Button;
 import java.util.List;
 
 public class ListAdapter extends BaseAdapter {
-    private Context context;
-    private List<ListButtonData> buttonDataList;
+    private final Context context;
+    private final List<ListButtonData> buttonDataList;
 
     public ListAdapter(Context context, List<ListButtonData> buttonDataList) {
         this.context = context;
@@ -46,8 +47,10 @@ public class ListAdapter extends BaseAdapter {
         // 버튼 클릭 리스너 설정
         button.setOnClickListener(v -> {
             try {
+                Log.i("ListAdapter", "실행 >>> " + data.getText() + " | action = " + data.getAction());
                 data.getAction().call();
             } catch (Exception e) {
+                Log.e("ListAdapter", "Error >>> " + e);
                 e.printStackTrace();
             }
         });
