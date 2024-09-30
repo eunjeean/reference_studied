@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
  * "android.permission.ACCESS_SUPERUSER" <br>
  * "android.permission.DEVICE_POWER" <br>
  * "android.permission.DUMP"
- *
- *
+ * <p>
+ * <p>
  * 대부분 SecurityException: Permission Denial 생기는데 환경에 따라 적용할 수 있을듯
  */
 public class ShellExecuteUtil {
@@ -31,6 +31,21 @@ public class ShellExecuteUtil {
 
         // adb shell 이후에 요청하는 명령어를 입력!
 //        String cmd = "sync"; // 명령어
+//        String cmd = "devices"; // 연결된 Device 목록 확인
+//
+//        String cmd = "pm clear --user 0 com.android.sample"; // 데이터 지우기 Clear App data : adb shell pm clear --user [user id] [package name]
+//        String cmd = "pm clear --user 0 --cache-only com.android.sample"; // 캐시 지우기 Clear cache data : adb shell pm clear --user [user id] --cache-only [package name]
+//
+//        앱 사용/사용중지 기능 동작시 권한문제가 발생할 수 있음 > 그러면 동작하지 않음
+//        String cmd = "pm disable-user --user 0 --cache-only com.android.sample"; // 앱 비활성화 시키기 : adb shell pm disable-user --user 0 [package name]
+//        String cmd = "pm enable --user 0 com.android.sample"; // 앱 다시 활성화 시키기 : adb shell pm enable --user 0 [package name]
+//
+//        설치:
+//        adb install –r –d - t APK명(경로)
+//        삭제:
+//        adb shell pm uninstall 패키지명
+//        String cmd = "pm uninstall --user 0 com.android.sample"; // 앱 삭제 시키기 : adb shell pm uninstall --user 0 [package name]
+
         try {
             Process process = Runtime.getRuntime().exec(cmd);
             Log.i(TAG, "process : " + process);

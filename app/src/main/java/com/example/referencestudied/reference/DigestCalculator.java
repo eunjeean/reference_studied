@@ -14,8 +14,8 @@ public class DigestCalculator {
     private static final String TAG = DigestCalculator.class.getName();
 
     /**
-     * SHA256 해싱 후 Base64 인코딩하기
-     * salt : 암호화 문자는 지정할 수 있음(코드상에는 날짜로 해둠)
+     * SHA256 해싱 후 Base64 인코딩하기 <br>
+     * salt : 암호화 문자는 지정할 수 있음(코드상에는 날짜로 해둠) <br>
      * 암호화만 가능하면 복호화 불가능(키가 없기 때문에)
      */
     public static void sha256Hashing() {
@@ -43,10 +43,10 @@ public class DigestCalculator {
         }
     }
 
-    /** N회차 SHA256 해싱 후 Base64 인코딩하기
-     * Password = “(임의 문자값)”
-     * Salt = YYYYMMDDHHmmss
-     * 반복회차 : N = 100 - ss (100 -Date의 초)
+    /** N회차 SHA256 해싱 후 Base64 인코딩하기 <br>
+     * Password = “(임의 문자값)” <br>
+     * Salt = YYYYMMDDHHmmss <br>
+     * 반복회차 : N = 100 - ss (100 -Date의 초) <br>
      * digest : BASE64(SHA256(SHA256(Password + salt)+salt)...N)
      */
     public static void generateDigest() {
