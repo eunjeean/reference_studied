@@ -19,22 +19,22 @@ public class MemoryUtil {
      * 안드로이드 시스템의 데이터 디렉토리를 반환
      * 시스템 데이터와 앱 데이터를 저장하는 데 사용
      * */
-//    public static long getTotalInternalMemorySize() {
-//        File path = Environment.getDataDirectory(); // 내부 저장소의 루트 디렉토리를 반환
-//        StatFs stat = new StatFs(path.getPath()); // StatFs 객체를 사용하여 파일 시스템의 상태
-//        long blockSize = stat.getBlockSizeLong(); // 파일 시스템의 블록 크기
-//        long totalBlocks = stat.getBlockCountLong(); // 전체 블록 수
-//        return totalBlocks * blockSize; // 전체 블록 수와 블록 크기를 곱하여 내부 저장소의 전체 용량을 바이트 단위로 반환
-//    }
-//
-//    // 내부 저장소의 사용 가능한 용량
-//    public static long getAvailableInternalMemorySize() {
-//        File path = Environment.getDataDirectory(); // 내부 저장소의 루트 디렉토리를 반환
-//        StatFs stat = new StatFs(path.getPath()); // StatFs 객체를 사용하여 파일 시스템의 상태
-//        long blockSize = stat.getBlockSizeLong(); // 파일 시스템의 블록 크기
-//        long availableBlocks = stat.getAvailableBlocksLong(); // 사용 가능한 블록 수
-//        return availableBlocks * blockSize; // 사용 가능한 블록 수와 블록 크기를 곱하여 내부 저장소의 사용 가능한 용량을 바이트 단위로 반환
-//    }
+    public static long getTotalInternalMemorySize() {
+        File path = Environment.getDataDirectory(); // 내부 저장소의 루트 디렉토리를 반환
+        StatFs stat = new StatFs(path.getPath()); // StatFs 객체를 사용하여 파일 시스템의 상태
+        long blockSize = stat.getBlockSizeLong(); // 파일 시스템의 블록 크기
+        long totalBlocks = stat.getBlockCountLong(); // 전체 블록 수
+        return totalBlocks * blockSize; // 전체 블록 수와 블록 크기를 곱하여 내부 저장소의 전체 용량을 바이트 단위로 반환
+    }
+
+    // 내부 저장소의 사용 가능한 용량
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory(); // 내부 저장소의 루트 디렉토리를 반환
+        StatFs stat = new StatFs(path.getPath()); // StatFs 객체를 사용하여 파일 시스템의 상태
+        long blockSize = stat.getBlockSizeLong(); // 파일 시스템의 블록 크기
+        long availableBlocks = stat.getAvailableBlocksLong(); // 사용 가능한 블록 수
+        return availableBlocks * blockSize; // 사용 가능한 블록 수와 블록 크기를 곱하여 내부 저장소의 사용 가능한 용량을 바이트 단위로 반환
+    }
 
     /**
      * 내부 공유 저장소의 디렉토리

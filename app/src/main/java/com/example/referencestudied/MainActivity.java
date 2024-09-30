@@ -2,8 +2,10 @@ package com.example.referencestudied;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
+import com.example.referencestudied.reference.MemoryUtil;
 import com.example.referencestudied.reference.ShellExecuteUtil;
 
 import java.util.ArrayList;
@@ -44,14 +46,39 @@ public class MainActivity extends Activity {
         }));
 
         /* 내외부 저장소의 메모리 용량 체크 방법 */
-        buttonDataList.add(new ListButtonData("MemoryCheck", () -> {
+        buttonDataList.add(new ListButtonData("Memory Check", () -> {
+            // 내부 저장소 -------------------------------------------------------------
+            long test1 = MemoryUtil.getTotalInternalMemorySize(); // 내부 저장소의 전체 용량을 반환
+            long test2 = MemoryUtil.getAvailableInternalMemorySize(); // 내부 저장소의 사용 가능한 용량
+            Log.d(TAG, "내부 저장소의 전체 용량 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test1), "MB"));
+            Log.d(TAG, "내부 저장소의 사용 가능한 용량 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test2), "MB"));
+
+            // 외부 저장소 -------------------------------------------------------------
+            long test3 = MemoryUtil.getTotalExternalMemorySize(); // 외부 저장소의 전체 용량
+            long test4 = MemoryUtil.getAvailableExternalMemorySize(); // 외부 저장소의 사용 가능한 용량
+            Log.d(TAG, "외부 저장소의 전체 용량 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test3), "MB"));
+            Log.d(TAG, "외부 저장소의 사용 가능한 용량 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test4), "MB"));
+
+            // apk File List 용량 조회 -------------------------------------------------------------
+//            ArrayList<String> apkList = new ArrayList<>();
+//            long test5 = MemoryUtil.getTotalApkListSize(apkList);
+//            Log.d(TAG, "apk File List 용량 조회 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test5), "MB"));
+//
+//            // apkFile 단일 용량 조회 -------------------------------------------------------------
+//            String apkFilePath = "";
+//            long test6 = MemoryUtil.getTotalApkListSize(apkFilePath);
+//            Log.d(TAG, "apkFile 단일 용량 조회 : " + MemoryUtil.unitString(MemoryUtil.bytesToMB(test6), "MB"));
+//
+//            // 여유공간 체크 로직 -------------------------------------------------------------
+//            long fileSizes = 0L;
+//            Boolean test7 = MemoryUtil.getTotalApkListSize(fileSizes);
+//            Log.d(TAG, "여유공간 체크 로직 : " + test7);
 
             return null; // Callable<Void>를 위한 null 반환
         }));
 
         /* N회차 암호화하기 */
         buttonDataList.add(new ListButtonData("Digest Calculartor", () -> {
-
             return null; // Callable<Void>를 위한 null 반환
         }));
 
