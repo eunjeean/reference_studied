@@ -1,6 +1,6 @@
 package com.example.referencestudied.reference;
 
-import android.util.Log;
+import com.example.referencestudied.util.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
  * 대부분 SecurityException: Permission Denial 생기는데 환경에 따라 적용할 수 있을듯
  */
 public class ShellExecuteUtil {
-    private static final String TAG = ShellExecuteUtil.class.getName();
 
     /**
      * adb shell sync 호출 매서드 > 퍼미션 없이 적용 확인 <br>
@@ -27,7 +26,7 @@ public class ShellExecuteUtil {
      * @param cmd adb shell 이후 문장으로 요청하는 명령어를 입력
      */
     public static void shellExecuteSync(String cmd) {
-        Log.i(TAG, "shellExecuteSync()");
+        LogUtil.i("shellExecuteSync()");
 
         // adb shell 이후에 요청하는 명령어를 입력!
 //        String cmd = "sync"; // 명령어
@@ -48,13 +47,13 @@ public class ShellExecuteUtil {
 
         try {
             Process process = Runtime.getRuntime().exec(cmd);
-            Log.i(TAG, "process : " + process);
+            LogUtil.i("process : " + process);
             int exitCode = process.waitFor(); // 프로세스가 종료될 때까지 기다림
 
             if (exitCode == 0) {
-                Log.i(TAG, "sync command executed successfully");
+                LogUtil.i("sync command executed successfully");
             } else {
-                Log.i(TAG, "sync command failed with exit code : " + exitCode);
+                LogUtil.i("sync command failed with exit code : " + exitCode);
             }
 
             // try-with-resources 구문으로 감싸서 BufferedReader 리소스를 자동으로 닫도록 함
@@ -63,16 +62,16 @@ public class ShellExecuteUtil {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    Log.i(TAG, "Sync output: " + line);
+                    LogUtil.i("Sync output: " + line);
                 }
 
                 while ((line = errorReader.readLine()) != null) {
-                    Log.i(TAG, "Sync error: " + line);
+                    LogUtil.i("Sync error: " + line);
                 }
             }
         } catch (Exception e) {
 //            e.printStackTrace();
-            Log.e(TAG, "error!!! : " + e);
+            LogUtil.e("error!!! : " + e);
         }
     }
 

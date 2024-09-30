@@ -1,12 +1,13 @@
 package com.example.referencestudied;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+
+import com.example.referencestudied.util.LogUtil;
 
 import java.util.List;
 
@@ -47,10 +48,10 @@ public class ListAdapter extends BaseAdapter {
         // 버튼 클릭 리스너 설정
         button.setOnClickListener(v -> {
             try {
-                Log.i("ListAdapter", "실행 >>> " + data.getText());
+                LogUtil.i("실행 >>> " + data.getText());
                 data.getAction().call();
             } catch (Exception e) {
-                Log.e("ListAdapter", "Error >>> " + e);
+                LogUtil.e("Error >>> " + e);
                 e.printStackTrace();
             }
         });

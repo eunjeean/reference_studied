@@ -2,7 +2,8 @@ package com.example.referencestudied.reference;
 
 
 import android.os.Build;
-import android.util.Log;
+
+import com.example.referencestudied.util.LogUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,14 +27,14 @@ public class DigestCalculator {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // YYYYMMDDHHmmss 형식 지정
         String salt = dateFormat.format(calendar.getTime()); // Calendar date를 지정된 형식으로 포맷
 //        String salt = "20240930133119";
-        Log.d(TAG, "salt : " + salt);
+        LogUtil.d("salt : " + salt);
 
         try {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
 //            sha256.update((salt).getBytes(StandardCharsets.UTF_8)); // StandardCharsets.UTF_8 기본값이라 지정 안해도됨
 //            byte[] hash = sha256.digest();
             byte[] hash = sha256.digest((password + salt).getBytes()); // 위에 2줄과 같은 내용
-            Log.d(TAG, "digest : " + base64Encode(hash));
+            LogUtil.d("digest : " + base64Encode(hash));
 
             // Base64 인코딩 반환
             base64Encode(hash);
@@ -43,7 +44,8 @@ public class DigestCalculator {
         }
     }
 
-    /** N회차 SHA256 해싱 후 Base64 인코딩하기 <br>
+    /**
+     * N회차 SHA256 해싱 후 Base64 인코딩하기 <br>
      * Password = “(임의 문자값)” <br>
      * Salt = YYYYMMDDHHmmss <br>
      * 반복회차 : N = 100 - ss (100 -Date의 초) <br>
@@ -57,21 +59,21 @@ public class DigestCalculator {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // YYYYMMDDHHmmss 형식 지정
         String salt = dateFormat.format(calendar.getTime()); // Calendar date를 지정된 형식으로 포맷
 //        String salt = "20240930133119";
-        Log.d(TAG, "salt : " + salt);
+        LogUtil.d("salt : " + salt);
 
         // 뒤에 2자리 추출(seconds)
         String lastTwoSalt = salt.substring(salt.length() - 2);
         int seconds = Integer.parseInt(lastTwoSalt);
 
         int N = 100 - seconds; // N 계산
-        Log.d(TAG, "generateDigest N : " + N);
+        LogUtil.d("generateDigest N : " + N);
 
         try {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
             sha256.update((password + salt).getBytes());
             byte[] hash = sha256.digest();
             byte[] saltBytes = salt.getBytes();
-//            Log.d(TAG, "hash : " + base64Encode(hash));
+//            LogUtil.d( "hash : " + base64Encode(hash));
 
             // N번 반복 해싱
             for (int i = 1; i <= N; i++) {
@@ -81,9 +83,9 @@ public class DigestCalculator {
                 System.arraycopy(saltBytes, 0, hashAndSalt, hash.length, saltBytes.length);
 
                 hash = sha256.digest(hashAndSalt);
-//                Log.d(TAG, "[" + i + "] hash : " + base64Encode(hash));
+//                LogUtil.d( "[" + i + "] hash : " + base64Encode(hash));
             }
-            Log.d(TAG, "digest : " + base64Encode(hash));
+            LogUtil.d("digest : " + base64Encode(hash));
 
             // Base64 인코딩 반환
             base64Encode(hash);
@@ -102,8 +104,10 @@ public class DigestCalculator {
         }
     }
 
-    /** 번외 : Calendar date를 지정된 형식으로 포맷
-     * 포맷 형식에 따라 출력되는 내용이 달라짐 */
+    /**
+     * 번외 : Calendar date를 지정된 형식으로 포맷
+     * 포맷 형식에 따라 출력되는 내용이 달라짐
+     */
     public static String dateFormat(String format) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);

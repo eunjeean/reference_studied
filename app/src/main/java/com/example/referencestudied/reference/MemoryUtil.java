@@ -2,7 +2,8 @@ package com.example.referencestudied.reference;
 
 import android.os.Environment;
 import android.os.StatFs;
-import android.util.Log;
+
+import com.example.referencestudied.util.LogUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class MemoryUtil {
         for (String apkFilePath : apkList) { // apkFilePath = 저장 경로
             File apkFile = new File(apkFilePath);
             // file 한개 용량
-            Log.d(TAG, "apkFile : " + unitString(bytesToMB(apkFile.length()), "MB"));
+            LogUtil.d("apkFile : " + unitString(bytesToMB(apkFile.length()), "MB"));
 
             if (apkFile.isFile() && apkFile.getName().toLowerCase().endsWith(".apk")) {
                 totalSize += apkFile.length();
@@ -130,7 +131,7 @@ public class MemoryUtil {
         long apkFileSize = 0;
         File apkFile = new File(apkFilePath);
         // file 한개 용량
-        Log.d(TAG, "apkFile : " + unitString(bytesToMB(apkFile.length()), "MB"));
+        LogUtil.d("apkFile : " + unitString(bytesToMB(apkFile.length()), "MB"));
 
         if (apkFile.isFile() && apkFile.getName().toLowerCase().endsWith(".apk")) {
             apkFileSize = apkFile.length();
@@ -144,21 +145,21 @@ public class MemoryUtil {
      */
     public static Boolean getTotalApkListSize(long fileSizes) {
         Boolean result = false;
-        Log.d(TAG, "fileSizes : " + fileSizes + " bytes");
+        LogUtil.d("fileSizes : " + fileSizes + " bytes");
 
         // 여유공간
         long availableMemory = MemoryUtil.getAvailableExternalMemorySize(); // byte
 
         // 여유공간 사이즈 한도 : 2G
         Boolean is2GBLimit = bytesToGB(availableMemory) > 2;
-        Log.d(TAG, "is2GBLimit : " + is2GBLimit);
-        Log.d(TAG, "availableMemory : " + unitString(bytesToGB(availableMemory), "GB"));
+        LogUtil.d("is2GBLimit : " + is2GBLimit);
+        LogUtil.d("availableMemory : " + unitString(bytesToGB(availableMemory), "GB"));
 
         // 여유공간 체크 로직 : (fileSizes * 2) + 50MB < 여유공간
         Boolean isLimit = (bytesToMB((fileSizes * 2)) + 50) < bytesToMB(availableMemory);
-        Log.d(TAG, "isLimit : " + isLimit);
-        Log.d(TAG, "(fileSizes * 2) + 50MB : " + unitString((bytesToMB((fileSizes * 2)) + 50), "MB"));
-        Log.d(TAG, "availableMemory : " + unitString(bytesToMB(availableMemory), "MB"));
+        LogUtil.d("isLimit : " + isLimit);
+        LogUtil.d("(fileSizes * 2) + 50MB : " + unitString((bytesToMB((fileSizes * 2)) + 50), "MB"));
+        LogUtil.d("availableMemory : " + unitString(bytesToMB(availableMemory), "MB"));
 
         if (is2GBLimit && isLimit) {
             result = true;
