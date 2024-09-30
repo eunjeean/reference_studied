@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         }));
 
         /* 내외부 저장소의 메모리 용량 체크 방법 */
-        buttonDataList.add(new ListButtonData("Memory Check", () -> {
+        buttonDataList.add(new ListButtonData("Memory Size", () -> {
             // 내부 저장소 -------------------------------------------------------------
             long test1 = MemoryUtil.getTotalInternalMemorySize(); // 내부 저장소의 전체 용량을 반환
             long test2 = MemoryUtil.getAvailableInternalMemorySize(); // 내부 저장소의 사용 가능한 용량
