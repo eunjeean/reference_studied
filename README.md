@@ -52,7 +52,7 @@
  - 포맷 형식에 따라 출력되는 내용이 달라짐
 
 `yyyy/MM/dd HH:mm:ss z = 2024/01/01 12:34:56 GMT+09:00` <br>
-`yyyy/MM/dd HH:mm:ss Z" = 2024/01/01 12:34:56 +0900` <br>
+`yyyy/MM/dd HH:mm:ss Z = 2024/01/01 12:34:56 +0900` <br>
 `yyyy/MM/dd HH:mm:ss 'Asia/Seoul' = 2024/01/01 12:34:56 Asia/Seoul` <br>
 `yyyy/MM/dd HH:mm:ss 'KST' = 2024/01/01 12:34:56 KST`
 
