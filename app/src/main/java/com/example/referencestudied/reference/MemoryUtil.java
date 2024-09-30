@@ -140,10 +140,11 @@ public class MemoryUtil {
 
     /**
      * 여유공간 체크 로직
+     * 요구사항 : (fileSizes * 2) + 50MB < 여유공간
      */
     public static Boolean getTotalApkListSize(long fileSizes) {
         Boolean result = false;
-//        Log.d(TAG, "standbyList fileSizes : " + fileSizes + " bytes");
+        Log.d(TAG, "fileSizes : " + fileSizes + " bytes");
 
         // 여유공간
         long availableMemory = MemoryUtil.getAvailableExternalMemorySize(); // byte
@@ -151,13 +152,13 @@ public class MemoryUtil {
         // 여유공간 사이즈 한도 : 2G
         Boolean is2GBLimit = bytesToGB(availableMemory) > 2;
         Log.d(TAG, "is2GBLimit : " + is2GBLimit);
-//        Log.d(TAG, "availableMemory : " + unitString(bytesToGB(availableMemory), "GB"));
+        Log.d(TAG, "availableMemory : " + unitString(bytesToGB(availableMemory), "GB"));
 
         // 여유공간 체크 로직 : (fileSizes * 2) + 50MB < 여유공간
         Boolean isLimit = (bytesToMB((fileSizes * 2)) + 50) < bytesToMB(availableMemory);
         Log.d(TAG, "isLimit : " + isLimit);
-//        Log.d(TAG, "(fileSizes * 2) + 50MB : " + unitString((bytesToMB((fileSizes * 2)) + 50), "MB"));
-//        Log.d(TAG, "availableMemory : " + unitString(bytesToMB(availableMemory), "MB"));
+        Log.d(TAG, "(fileSizes * 2) + 50MB : " + unitString((bytesToMB((fileSizes * 2)) + 50), "MB"));
+        Log.d(TAG, "availableMemory : " + unitString(bytesToMB(availableMemory), "MB"));
 
         if (is2GBLimit && isLimit) {
             result = true;

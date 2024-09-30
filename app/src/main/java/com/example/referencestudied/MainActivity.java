@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.example.referencestudied.reference.DigestCalculator;
 import com.example.referencestudied.reference.MemoryUtil;
 import com.example.referencestudied.reference.ShellExecuteUtil;
 
@@ -77,8 +78,28 @@ public class MainActivity extends Activity {
             return null; // Callable<Void>를 위한 null 반환
         }));
 
-        /* N회차 암호화하기 */
-        buttonDataList.add(new ListButtonData("Digest Calculartor", () -> {
+        /* 해시 암호화하기 */
+        buttonDataList.add(new ListButtonData("Digest Calculator", () -> {
+            DigestCalculator.sha256Hashing(); // 1회 해시
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* N회차 해시 암호화하기 */
+        buttonDataList.add(new ListButtonData("Digest Calculator N", () -> {
+            DigestCalculator.generateDigest(); // N회 반복 해시
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* Calendar date를 지정된 형식으로 포맷 */
+        buttonDataList.add(new ListButtonData("Date Format", () -> {
+            String date1 = "yyyy/MM/dd HH:mm:ss z"; // 2024/09/24 16:14:15 GMT+09:00
+            String date2 = "yyyy/MM/dd HH:mm:ss Z"; // 2024/09/24 16:14:15 +0900
+            String date3 = "yyyy/MM/dd HH:mm:ss 'Asia/Seoul'"; // 2024/09/24 16:14:15 Asia/Seoul
+            String date4 = "yyyy/MM/dd HH:mm:ss 'KST'"; // 2024/09/24 16:14:15 KST
+            Log.d(TAG, "digest : " + DigestCalculator.dateFormat(date1));
+            Log.d(TAG, "digest : " + DigestCalculator.dateFormat(date2));
+            Log.d(TAG, "digest : " + DigestCalculator.dateFormat(date3));
+            Log.d(TAG, "digest : " + DigestCalculator.dateFormat(date4));
             return null; // Callable<Void>를 위한 null 반환
         }));
 

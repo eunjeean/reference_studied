@@ -8,35 +8,55 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Date;
-import java.util.TimeZone;
-
-/**
- * API 보안인증강화를 위한 Digest 생성
- * <p>
- * date: YYYY/MM/DD HH:mm:ssTZ
- * Password = “{said}:{stb_mac}”
- * Salt = YYYYMMDDHHmmss
- * N = 100 -ss (100 -Date의 초)
- * Digest: BASE64(SHA256(SHA256(Password + salt)+salt)...N)
- * 해당결과값은 API 호출시 header에 said/mac/digest실행된 date/digest를 추가하여 전송한다.
- */
+import java.util.Calendar;
 
 public class DigestCalculator {
     private static final String TAG = DigestCalculator.class.getName();
-    
-    /**
-     * Digest 생성
-     * BASE64(SHA256(SHA256(Password + salt)+salt)...N)
-     */
-    public static String generateDigest(Date time) {
-        // Password 생성
-        String saId = "SettingManager.getInstance().getSaId()";
-        String stbMac = "SettingManager.getInstance().getMacAdd()";
-        String password = saId + ":" + stbMac;
 
-        // Salt 생성
-        String salt = dateFormat(time, "yyyyMMddHHmmss"); // YYYYMMDDHHmmss 형식으로 포맷
+    /**
+     * SHA256 해싱 후 Base64 인코딩하기
+     * salt : 암호화 문자는 지정할 수 있음(코드상에는 날짜로 해둠)
+     * 암호화만 가능하면 복호화 불가능(키가 없기 때문에)
+     */
+    public static void sha256Hashing() {
+        String password = "password";
+
+        // Salt 생성 : 요청 시간으로 암호화 만들기
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // YYYYMMDDHHmmss 형식 지정
+        String salt = dateFormat.format(calendar.getTime()); // Calendar date를 지정된 형식으로 포맷
+//        String salt = "20240930133119";
+        Log.d(TAG, "salt : " + salt);
+
+        try {
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+//            sha256.update((salt).getBytes(StandardCharsets.UTF_8)); // StandardCharsets.UTF_8 기본값이라 지정 안해도됨
+//            byte[] hash = sha256.digest();
+            byte[] hash = sha256.digest((password + salt).getBytes()); // 위에 2줄과 같은 내용
+            Log.d(TAG, "digest : " + base64Encode(hash));
+
+            // Base64 인코딩 반환
+            base64Encode(hash);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** N회차 SHA256 해싱 후 Base64 인코딩하기
+     * Password = “(임의 문자값)”
+     * Salt = YYYYMMDDHHmmss
+     * 반복회차 : N = 100 - ss (100 -Date의 초)
+     * digest : BASE64(SHA256(SHA256(Password + salt)+salt)...N)
+     */
+    public static void generateDigest() {
+        String password = "password";
+
+        // Salt 생성 : 요청 시간으로 암호화 만들기
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); // YYYYMMDDHHmmss 형식 지정
+        String salt = dateFormat.format(calendar.getTime()); // Calendar date를 지정된 형식으로 포맷
+//        String salt = "20240930133119";
         Log.d(TAG, "salt : " + salt);
 
         // 뒤에 2자리 추출(seconds)
@@ -51,6 +71,7 @@ public class DigestCalculator {
             sha256.update((password + salt).getBytes());
             byte[] hash = sha256.digest();
             byte[] saltBytes = salt.getBytes();
+//            Log.d(TAG, "hash : " + base64Encode(hash));
 
             // N번 반복 해싱
             for (int i = 1; i <= N; i++) {
@@ -65,11 +86,10 @@ public class DigestCalculator {
             Log.d(TAG, "digest : " + base64Encode(hash));
 
             // Base64 인코딩 반환
-            return base64Encode(hash);
+            base64Encode(hash);
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return "";
         }
     }
 
@@ -82,10 +102,12 @@ public class DigestCalculator {
         }
     }
 
-    /** Calendar date를 지정된 형식으로 포맷 */
-    public static String dateFormat(Date time, String format) {
+    /** 번외 : Calendar date를 지정된 형식으로 포맷
+     * 포맷 형식에 따라 출력되는 내용이 달라짐 */
+    public static String dateFormat(String format) {
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        return dateFormat.format(time);
+//        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        return dateFormat.format(calendar.getTime());
     }
 }

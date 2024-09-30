@@ -47,7 +47,7 @@ public class ListAdapter extends BaseAdapter {
         // 버튼 클릭 리스너 설정
         button.setOnClickListener(v -> {
             try {
-                Log.i("ListAdapter", "실행 >>> " + data.getText() + " | action = " + data.getAction());
+                Log.i("ListAdapter", "실행 >>> " + data.getText());
                 data.getAction().call();
             } catch (Exception e) {
                 Log.e("ListAdapter", "Error >>> " + e);
