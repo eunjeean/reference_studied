@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 전체 Log를 조회하기 위한 권한 -->
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- 안드로이드 8(Oreo) 대상 : 사용자가 앱을 설치할 때 개별적으로 파일 및 폴더에 대한 액세스를 허용하도록 선택 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReferenceStudied"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

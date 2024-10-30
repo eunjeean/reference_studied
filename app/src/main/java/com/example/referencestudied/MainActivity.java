@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.example.referencestudied.reference.DigestCalculator;
+import com.example.referencestudied.reference.LogFilter;
 import com.example.referencestudied.reference.MemoryUtil;
 import com.example.referencestudied.reference.ShellExecuteUtil;
 import com.example.referencestudied.util.LogUtil;
@@ -100,6 +101,15 @@ public class MainActivity extends Activity {
             LogUtil.d("digest : " + DigestCalculator.dateFormat(date2));
             LogUtil.d("digest : " + DigestCalculator.dateFormat(date3));
             LogUtil.d("digest : " + DigestCalculator.dateFormat(date4));
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* 현재 출력된 로그 조회 > 특정키워드 필터링 로그 저장 */
+        buttonDataList.add(new ListButtonData("Log Filter", () -> {
+            String keyword = "FluteResponseService";
+            LogFilter logFilter = new LogFilter(this);
+//            logFilter.saveRealTimeLogs(keyword); // 각각 파일 저장
+            logFilter.saveFindKeywordLogs(keyword); // 필터링된 파일만 저장
             return null; // Callable<Void>를 위한 null 반환
         }));
 
