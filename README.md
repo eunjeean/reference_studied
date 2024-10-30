@@ -66,7 +66,7 @@
    `<uses-permission android:name="android.permission.READ_LOGS"/>`
  
    [외부 저장소 접근 권한]
-   `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
+   `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
    `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`
 
 adb 호출방법(경로에 따라 권한이 필요함) -----------------------------------------------------
@@ -79,12 +79,12 @@ adb 호출방법(경로에 따라 권한이 필요함) -------------------------
 >없이 쓰려면 `adb logcat -d  -f \(파일경로)\testLog.txt`
 
 [현재 출력된 로그의 특정 키워드 필터링하여 저장]
-`adb logcat -d | grep "keyword" > \(파일경로)\testLog.txt`
-`adb logcat -d | find "keyword" > \(파일경로)\testLog.txt`
+`adb logcat -d | grep "keyword" > \(파일경로)\testLog.txt`<br>
+`adb logcat -d | find "keyword" > \(파일경로)\testLog.txt`<br>
 `adb logcat -d | findstr "keyword" > \(파일경로)\testLog.txt`
 >없이 쓰려면
-`adb logcat -d | grep "keyword" -f \(파일경로)\testLog.txt`
-`adb logcat -d | find "keyword" -f \(파일경로)\testLog.txt`
+`adb logcat -d | grep "keyword" -f \(파일경로)\testLog.txt`<br>
+`adb logcat -d | find "keyword" -f \(파일경로)\testLog.txt`<br>
 `adb logcat -d | findstr "keyword" -f \(파일경로)\testLog.txt`
 
 기타 >>
