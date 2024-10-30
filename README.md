@@ -67,8 +67,8 @@
  
    [외부 저장소 접근 권한]<br>
    `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
-   `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`
-<br>
+   `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>
+
 >#### adb 호출방법(경로에 따라 권한이 필요함) -----------------------------------------------------<br>
  [실시간 로그 저장 > 계속 덮어쓰면서 백업됨(과부하의 원인)]<br>
  `adb logcat > /(파일경로)/testLog.txt` 또는 `adb logcat -f /(파일경로)/testLog.txt`
