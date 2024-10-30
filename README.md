@@ -69,27 +69,25 @@
    `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
    `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`
 <br>
->>adb 호출방법(경로에 따라 권한이 필요함) -----------------------------------------------------<br>
-[실시간 로그 저장 > 계속 덮어쓰면서 백업됨(과부하의 원인)]<br>
-`adb logcat > /(파일경로)/testLog.txt`
-또는 `adb logcat -f /(파일경로)/testLog.txt`
+>adb 호출방법(경로에 따라 권한이 필요함) -----------------------------------------------------<br>
+ [실시간 로그 저장 > 계속 덮어쓰면서 백업됨(과부하의 원인)]<br>
+ `adb logcat > /(파일경로)/testLog.txt` 또는 `adb logcat -f /(파일경로)/testLog.txt`<br>
 
-[현재 출력된 로그만 저장]<br>
-`adb logcat -d > \(파일경로)\testLog.txt`
-또는 `adb logcat -d  -f \(파일경로)\testLog.txt`
+ [현재 출력된 로그만 저장]<br>
+ `adb logcat -d > \(파일경로)\testLog.txt` 또는 `adb logcat -d  -f \(파일경로)\testLog.txt`
 
-[현재 출력된 로그의 특정 키워드 필터링하여 저장]<br>
-`adb logcat -d | grep "keyword" > \(파일경로)\testLog.txt`<br>
-`adb logcat -d | find "keyword" > \(파일경로)\testLog.txt`<br>
-`adb logcat -d | findstr "keyword" > \(파일경로)\testLog.txt`
-또는
-`adb logcat -d | grep "keyword" -f \(파일경로)\testLog.txt`<br>
-`adb logcat -d | find "keyword" -f \(파일경로)\testLog.txt`<br>
-`adb logcat -d | findstr "keyword" -f \(파일경로)\testLog.txt`
+ [현재 출력된 로그의 특정 키워드 필터링하여 저장]<br>
+ `adb logcat -d | grep "keyword" > \(파일경로)\testLog.txt`<br>
+ `adb logcat -d | find "keyword" > \(파일경로)\testLog.txt`<br>
+ `adb logcat -d | findstr "keyword" > \(파일경로)\testLog.txt`<br>
+ 또는<br>
+ `adb logcat -d | grep "keyword" -f \(파일경로)\testLog.txt`<br>
+ `adb logcat -d | find "keyword" -f \(파일경로)\testLog.txt`<br>
+ `adb logcat -d | findstr "keyword" -f \(파일경로)\testLog.txt`
 
-기타 >><br>
-[버퍼에 저장된 모든 로그를 지우는 명령어(이전 로그를 삭제해 새 로그만 기록되도록 설정)]<br>
-`adb logcat -c > /(파일경로)/testLog.txt`
+ 기타 >><br>
+ [버퍼에 저장된 모든 로그를 지우는 명령어(이전 로그를 삭제해 새 로그만 기록되도록 설정)]<br>
+ `adb logcat -c > /(파일경로)/testLog.txt`
    
 ***
 
