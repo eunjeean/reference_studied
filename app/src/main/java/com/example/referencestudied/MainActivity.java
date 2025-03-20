@@ -7,6 +7,7 @@ import android.widget.ListView;
 import com.example.referencestudied.reference.DigestCalculator;
 import com.example.referencestudied.reference.LogFilter;
 import com.example.referencestudied.reference.MemoryUtil;
+import com.example.referencestudied.reference.NetworkStateMonitor;
 import com.example.referencestudied.reference.ShellExecuteUtil;
 import com.example.referencestudied.util.LogUtil;
 
@@ -15,6 +16,9 @@ import java.util.List;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();
+
+    /* 네트워크 상태 모니터링 */
+    private NetworkStateMonitor networkMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +117,26 @@ public class MainActivity extends Activity {
             return null; // Callable<Void>를 위한 null 반환
         }));
 
+        /* 네트워크 상태 모니터링 */
+        buttonDataList.add(new ListButtonData("NetworkStateMonitor", () -> {
+            networkMonitor = new NetworkStateMonitor(this);
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
         /* 설명 작성 */
 //        buttonDataList.add(new ListButtonData("버튼문구", () -> {
 //            // 기능 추가
 //            return null; // Callable<Void>를 위한 null 반환
 //        }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        /* 네트워크 상태 모니터링 */
+        if (networkMonitor != null) {
+            networkMonitor.unregister();
+        }
     }
 }
