@@ -91,6 +91,16 @@
    
 ***
 
->### 07) 기타 추가중...
+>### 07) NetworkStateMonitor
+ - 네트워크 상태 모니터링
+ - ConnectivityManager.CONNECTIVITY_ACTION은 API 28(Android 9.0)부터 deprecated 되었으므로 NetworkCallback 사용을 고려하는 것이 좋음 + OS 버전에 따라 처리되도록 2가지 방법 모두 반영
+ - 이전에는 네트워크 상태 변경을 감지하기 위해 브로드캐스트 리시버를 사용하여 이 액션을 수신했지만, API 26(Android 8.0)부터는 암시적 브로드캐스트에 대한 정적 리시버 등록이 제한
+ - 최신 버전에서는 registerNetworkCallback 또는 registerDefaultNetworkCallback과 같은 메서드를 사용하여 네트워크 상태 변경을 비동기적으로 처리하는 것이 권장
+ - registerNetworkCallback() : 특정 네트워크 요청에 대한 변경 사항을 감지할 때 사용, Wi-Fi나 특정 VPN 연결 같은 특정 네트워크 유형에 대한 변경을 감지 가능
+ -  현재사용코드 >> registerDefaultNetworkCallback() : 기기의 기본 네트워크(현재 활성화된 네트워크) 상태가 바뀔 때 호출됨, 특정 네트워크 유형을 지정하지 않고, 모든 네트워크 변경을 감지
+
+***
+
+>### 00) 기타 추가중...
 
 ***
