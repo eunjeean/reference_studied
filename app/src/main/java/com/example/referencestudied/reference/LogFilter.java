@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.referencestudied.util.LogUtil;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -57,7 +58,7 @@ public class LogFilter {
      * 1) 현재 출력된 로그 저장 saveRealTimeLogs()
      * 2) 특정키워드를 필터링 저장 findKeyword()
      */
-    public static void saveRealTimeLogs(String keyword) {
+    public void saveRealTimeLogs(String keyword) {
         LogUtil.i("saveRealTimeLogs >>>>>");
 
         try {
@@ -107,27 +108,41 @@ public class LogFilter {
         }
     }
 
-    private static void findKeyword(String keyword, File logFile) {
+    private void findKeyword(String keyword, File logFile) {
         LogUtil.i("findKeyword >>>>> ");
 
         // 덮어쓰지 않도록 이름 다르게 처리
         String logFileName = "logFilter_" + logsCnt + ".txt";
         File outputFile = new File(path, logFileName);
+        int cnt = 0;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(logFile.getAbsolutePath()));
-             FileWriter fileWriter = new FileWriter(outputFile, true)) {
-            int cnt = 0;
+        // 속도개선 >> FileWriter는 1줄씩 저장 / BufferedWriter는 여러 줄을 한 번에 버퍼링 후 파일에 씀
+//        try (BufferedReader reader = new BufferedReader(new FileReader(logFile.getAbsolutePath()));
+//             FileWriter fileWriter = new FileWriter(outputFile, true)) { // append = true
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                if (line.contains(keyword)) {
+//                    cnt++;
+////                    LogUtil.w("line.contains(keyword) : " + line);
+//                    fileWriter.write(line + System.lineSeparator()); // 검색 문자열이 포함된 라인 저장
+//                }
+//            }
+        try (BufferedReader reader = new BufferedReader(new FileReader(logFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, true))) { // append=true
+
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.contains(keyword)) {
                     cnt++;
-//                    LogUtil.w("line.contains(keyword) : " + line);
-                    fileWriter.write(line + System.lineSeparator()); // 검색 문자열이 포함된 라인 저장
+                    writer.write(line);
+                    writer.newLine();
                 }
             }
+
             LogUtil.d(cnt + "개 확인 >> findKeyword DONE!");
 
             // 전체로그 저장한 파일 삭제
+            // new FileWriter(outputFile, false)) > (append=false)로 하면 기존파일에 덮어쓰기됨
 //            LogUtil.d("전체 내용 저장한 로그 파일 삭제");
 //            deleteFile(logFile);
 
@@ -145,7 +160,7 @@ public class LogFilter {
      * 필터링된 파일만 저장!
      * 현재 출력된 로그 조회 > 특정키워드를 필터링 저장
      */
-    public static void saveFindKeywordLogs(String keyword) {
+    public void saveFindKeywordLogs(String keyword) {
         LogUtil.i("saveFindKeywordLogs >>>>>");
         try {
             File logDirectory = new File(path);
@@ -163,17 +178,31 @@ public class LogFilter {
 
             // logcat 조회
             Process process = Runtime.getRuntime().exec("logcat -d");
+            int cnt = 0;
 
             // 파일에 기록할 FileWriter 생성 (append 모드 사용)
+            // 속도개선 >> FileWriter는 1줄씩 저장 / BufferedWriter는 여러 줄을 한 번에 버퍼링 후 파일에 씀
+//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//                 FileWriter writer = new FileWriter(logFile, true)) { // true로 append 모드 설정
+//                String line;
+//
+//                // 로그에서 특정 키워드가 포함된 줄만 필터링하여 파일에 기록
+//                while ((line = reader.readLine()) != null) {
+//                    if (line.contains(keyword)) {
+//                        writer.write(line + System.lineSeparator()); // 각 줄 끝에 개행 문자 추가 = "\n"
+//                        cnt++;
+//                    }
+//                }
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                 FileWriter writer = new FileWriter(logFile, true)) { // true로 append 모드 설정
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) { // append=true 유지 (기존 내용 추가)
+
                 String line;
-                int cnt = 0;
 
                 // 로그에서 특정 키워드가 포함된 줄만 필터링하여 파일에 기록
                 while ((line = reader.readLine()) != null) {
                     if (line.contains(keyword)) {
-                        writer.write(line + System.lineSeparator()); // 각 줄 끝에 개행 문자 추가 = "\n"
+                        writer.write(line);
+                        writer.newLine(); // System.lineSeparator() 대신 newLine() 사용 (가독성 향상)
                         cnt++;
                     }
                 }

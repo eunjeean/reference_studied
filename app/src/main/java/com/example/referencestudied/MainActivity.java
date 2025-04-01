@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
 
         /* 현재 출력된 로그 조회 > 특정키워드 필터링 로그 저장 */
         buttonDataList.add(new ListButtonData("Log Filter", () -> {
-            String keyword = "FluteResponseService";
+            String keyword = "Filter";
             LogFilter logFilter = new LogFilter(this);
 //            logFilter.saveRealTimeLogs(keyword); // 각각 파일 저장
             logFilter.saveFindKeywordLogs(keyword); // 필터링된 파일만 저장
