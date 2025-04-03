@@ -1,6 +1,7 @@
 package com.example.referencestudied;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -9,6 +10,7 @@ import com.example.referencestudied.reference.LogFilter;
 import com.example.referencestudied.reference.MemoryUtil;
 import com.example.referencestudied.reference.NetworkStateMonitor;
 import com.example.referencestudied.reference.ShellExecuteUtil;
+import com.example.referencestudied.reference.autologin.AutoLoginActivity;
 import com.example.referencestudied.util.LogUtil;
 
 import java.util.ArrayList;
@@ -120,6 +122,30 @@ public class MainActivity extends Activity {
         /* 네트워크 상태 모니터링 */
         buttonDataList.add(new ListButtonData("NetworkStateMonitor", () -> {
             networkMonitor = new NetworkStateMonitor(this);
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* 자동로그인 기능 구현 1) AccountManager */
+        buttonDataList.add(new ListButtonData("AccountManager", () -> {
+            Intent intent = new Intent(MainActivity.this, AutoLoginActivity.class);
+            intent.putExtra("BUTTON_KEY", "AccountManager"); // 버튼 정보 전달
+            startActivity(intent);
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* 자동로그인 기능 구현 2) EncryptedSharedPreferences */
+        buttonDataList.add(new ListButtonData("SharedPreferences", () -> {
+            Intent intent = new Intent(MainActivity.this, AutoLoginActivity.class);
+            intent.putExtra("BUTTON_KEY", "SharedPreferences"); // 버튼 정보 전달
+            startActivity(intent);
+            return null; // Callable<Void>를 위한 null 반환
+        }));
+
+        /* 자동로그인 기능 구현 3) EncryptedSharedPreferences + KeyStore */
+        buttonDataList.add(new ListButtonData("KeyStore", () -> {
+            Intent intent = new Intent(MainActivity.this, AutoLoginActivity.class);
+            intent.putExtra("BUTTON_KEY", "KeyStore"); // 버튼 정보 전달
+            startActivity(intent);
             return null; // Callable<Void>를 위한 null 반환
         }));
 

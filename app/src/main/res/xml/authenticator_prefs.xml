@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="계정 설정">
+        <Preference
+            android:key="account_sync"
+            android:title="자동 동기화"
+            android:summary="이 계정의 데이터를 자동으로 동기화합니다."
+            android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
