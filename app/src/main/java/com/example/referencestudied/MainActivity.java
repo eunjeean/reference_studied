@@ -116,6 +116,7 @@ public class MainActivity extends Activity {
             LogFilter logFilter = new LogFilter(this);
 //            logFilter.saveRealTimeLogs(keyword); // 각각 파일 저장
             logFilter.saveFindKeywordLogs(keyword); // 필터링된 파일만 저장
+//            logFilter.saveFindPackageLogs(keyword); // 패키지이름으로 조회하여 파일만 저장
             return null; // Callable<Void>를 위한 null 반환
         }));
 

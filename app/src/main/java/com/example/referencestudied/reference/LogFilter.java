@@ -46,6 +46,7 @@ import java.io.InputStreamReader;
 public class LogFilter {
     static int logsCnt = 0;
     static int keywordLogsCnt = 0;
+    static int packageLogsCnt = 0;
     static String path = "";
 
     public LogFilter(Context context) {
@@ -230,6 +231,94 @@ public class LogFilter {
         } catch (IOException e) {
             //            e.printStackTrace();
             LogUtil.e("로그를 읽는 중 오류 발생 : " + e);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            LogUtil.e("Exception : " + e);
+        }
+    }
+
+    /**
+     * 현재 출력된 로그 조회 > 특정패키지 조회 저장 pid = packageName
+     * 단, 실행중인 app에 한해서 가능 > 방안 : pid를 임의로 넣어서 조회!
+     * <p>
+     * [pid로 조회하는 방법]
+     * 앱 패키지 이름의 PID 확인 > adb shell pidof (패키지명)
+     * 띄어쓰기 필수 > adb logcat -d | grep " (pid)"
+     * 띄어쓰기 필수 > adb logcat -d | findstr " (pid)"
+     * <p>
+     * [앱 PID를 자동으로 가져와서 저장]
+     * adb logcat -d --pid=$(adb shell pidof (패키지명)) > \(파일경로)\testLog.txt
+     */
+    public void saveFindPackageLogs(String packageName) {
+        LogUtil.i("saveFindPackageLogs >>>>> " + packageName);
+        try {
+            File logDirectory = new File(path);
+
+            if (!logDirectory.exists()) {
+                logDirectory.mkdirs();
+                LogUtil.e("logDirectory 생성!");
+            }
+            setFilePermissions(logDirectory);
+
+            // 덮어쓰지 않도록 이름 다르게 처리
+            packageLogsCnt++;
+            String logFileName = "PackageLog_" + packageLogsCnt + ".txt";
+            File logFile = new File(logDirectory, logFileName);
+
+            // 해당 패키지의 PID 얻기
+            Process getPidProcess = Runtime.getRuntime().exec("pidof " + packageName);
+            BufferedReader pidReader = new BufferedReader(new InputStreamReader(getPidProcess.getInputStream()));
+            String pid = pidReader.readLine(); // 여러 PID가 나올 수 있지만, 첫 번째만 사용
+            pidReader.close();
+
+            if (pid == null || pid.isEmpty()) {
+                LogUtil.e("해당 앱의 PID를 찾을 수 없음!");
+//                return;
+
+                LogUtil.e("packageName = " + packageName + "PID로 지정하여 재조회!");
+                // packageName을 pid로 보낸다면 가능!
+                pid = packageName;
+            }
+
+            // logcat 조회
+            Process process = Runtime.getRuntime().exec("logcat -d --pid=" + pid);
+//            Process process = Runtime.getRuntime().exec("logcat -v time -d --pid=" + pid); // 로그 타임스탬프가 더 명확하게 보임
+
+            int cnt = 0;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    cnt++;
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+            LogUtil.d(cnt + "개 확인 >> findPackage DONE!");
+
+            // 프로세스가 종료될 때까지 기다림
+            int exitCode = process.waitFor();
+
+            // 에러 메시지 출력
+            if (exitCode != 0) {
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                StringBuilder errorMsg = new StringBuilder();
+                String errorMsgLine;
+                while ((errorMsgLine = errorReader.readLine()) != null) {
+                    errorMsg.append(errorMsgLine).append("\n");
+                }
+                errorReader.close();
+                LogUtil.e("sync command failed with exit code: " + exitCode);
+                LogUtil.e("Error message: " + errorMsg.toString());
+
+            } else {
+                LogUtil.i("sync command executed successfully");
+            }
+
+        } catch (IOException e) {
+            //            e.printStackTrace();
+            LogUtil.e("로그를 읽는 중 오류 발생 : " + e);
+
         } catch (Exception e) {
 //            e.printStackTrace();
             LogUtil.e("Exception : " + e);
