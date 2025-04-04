@@ -85,6 +85,17 @@
  `adb logcat -d | find "keyword" -f \(파일경로)\testLog.txt`<br>
  `adb logcat -d | findstr "keyword" -f \(파일경로)\testLog.txt`
 
+[PID 조회 : 앱 패키지 이름의 PID 확인]<br>
+`adb shell pidof (패키지명)`<br>
+
+[조회한 PID로 로그조회]<br>
+띄어쓰기 필수 > `adb logcat -d | grep " (pid)"`<br>
+띄어쓰기 필수 > `adb logcat -d | find " (pid)"`<br>
+띄어쓰기 필수 > `adb logcat -d | findstr " (pid)"`
+
+[앱 PID를 자동으로 가져와서 저장]<br>
+`adb logcat -d --pid=$(adb shell pidof (패키지명)) > \(파일경로)\testLog.txt`<br>
+
  기타 >><br>
  [버퍼에 저장된 모든 로그를 지우는 명령어(이전 로그를 삭제해 새 로그만 기록되도록 설정)]<br>
  `adb logcat -c > /(파일경로)/testLog.txt`
